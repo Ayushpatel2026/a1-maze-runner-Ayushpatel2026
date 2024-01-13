@@ -11,10 +11,31 @@ public class Main {
     private static final Logger logger = LogManager.getLogger();
 
     public static void main(String[] args) {
-        System.out.println("** Starting Maze Runner");
+        logger.info("** Starting Maze Runner");
+
+        String filePath = null;
+
+        // Check for -i or --input flag
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("-i") || args[i].equals("--input")) {
+                if (i + 1 < args.length) {
+                    filePath = args[i + 1];
+                } else {
+                    System.err.println("Error: Missing file path after -i or --input flag.");
+                    System.exit(1);
+                }
+                break;
+            }
+        }
+
+        if (filePath == null) {
+            System.err.println("Error: Missing input file. Use -i or --input followed by the file path.");
+            System.exit(1);
+        }
+
         try {
-            System.out.println("**** Reading the maze from file " + args[0]);
-            BufferedReader reader = new BufferedReader(new FileReader(args[0]));
+            logger.info("**** Reading the maze from file " + filePath);
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String line;
             while ((line = reader.readLine()) != null) {
                 for (int idx = 0; idx < line.length(); idx++) {
@@ -29,8 +50,8 @@ public class Main {
         } catch(Exception e) {
             System.err.println("/!\\ An error has occured /!\\");
         }
-        System.out.println("**** Computing path");
-        System.out.println("PATH NOT COMPUTED");
-        System.out.println("** End of MazeRunner");
+        logger.info("**** Computing path");
+        logger.error("PATH NOT COMPUTED");
+        logger.info("** End of MazeRunner");
     }
 }
