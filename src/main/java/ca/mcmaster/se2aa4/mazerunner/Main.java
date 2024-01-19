@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.commons.cli.*;
 import java.util.ArrayList;
+import java.nio.file.Paths;
+
 
 public class Main {
 
@@ -64,45 +66,94 @@ public class Main {
     public static void main(String[] args) {
         logger.info("** Starting Maze Runner");
 
-        String filePath = null;
+        // String filePath = null;
 
-        // Check for -i or --input flag
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-i") || args[i].equals("--input")) {
-                if (i + 1 < args.length) {
-                    filePath = args[i + 1];
-                } else {
-                    System.err.println("Error: Missing file path after -i or --input flag.");
-                    System.exit(1);
-                }
-                break;
-            }
-        }
+        // // Check for -i or --input flag
+        // for (int i = 0; i < args.length; i++) {
+        //     if (args[i].equals("-i") || args[i].equals("--input")) {
+        //         if (i + 1 < args.length) {
+        //             filePath = args[i + 1];
+        //         } else {
+        //             System.err.println("Error: Missing file path after -i or --input flag.");
+        //             System.exit(1);
+        //         }
+        //         break;
+        //     }
+        // }
 
-        if (filePath == null) {
-            System.err.println("Error: Missing input file. Use -i or --input followed by the file path.");
-            System.exit(1);
-        }
+        // if (filePath == null) {
+        //     System.err.println("Error: Missing input file. Use -i or --input followed by the file path.");
+        //     System.exit(1);
+        // }
 
         try {
-            logger.info("**** Reading the maze from file " + filePath);
-            BufferedReader reader = new BufferedReader(new FileReader(filePath));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                for (int idx = 0; idx < line.length(); idx++) {
-                    if (line.charAt(idx) == '#') {
-                        System.out.print("WALL ");
-                    } else if (line.charAt(idx) == ' ') {
-                        System.out.print("PASS ");
-                    }
-                }
-                System.out.print(System.lineSeparator());
-            }
-        } catch(Exception e) {
-            System.err.println("/!\\ An error has occured /!\\");
+            Configuration config = configure(args);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            //e.printStackTrace();
+            System.err.println(e.getMessage());
+        }catch(IllegalArgumentException e){
+            System.err.println(e.getMessage());
         }
+
+
+        // try {
+        //     Configuration config = configure(args);
+        //     logger.info("**** Reading the maze from file " + config.filePath);
+        //     BufferedReader reader = new BufferedReader(new FileReader(config.filePath));
+        //     String line;
+        //     while ((line = reader.readLine()) != null) {
+        //         for (int idx = 0; idx < line.length(); idx++) {
+        //             if (line.charAt(idx) == '#') {
+        //                 System.out.print("WALL ");
+        //             } else if (line.charAt(idx) == ' ') {
+        //                 System.out.print("PASS ");
+        //             }
+        //         }
+        //         System.out.print(System.lineSeparator());
+        //     }
+        // } catch(Exception e) {
+        //     System.err.println("/!\\ An error has occured /!\\");
+        // }
         logger.info("**** Computing path");
         logger.error("PATH NOT COMPUTED");
         logger.info("** End of MazeRunner");
     }
+
+     private static Configuration configure(String[] commandLineArguments) throws ParseException {
+        logger.info("**** Reading Command-Line Arguments");
+        Options options = new Options();
+        options.addOption("i", true, "File Path of the Maze File");
+        options.addOption("p", true, "Potential Path to verify");
+        //options.addOption("method", true, "Score system to use (rule, fsm)");
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = parser.parse(options, commandLineArguments);
+        String filepath = cmd.getOptionValue("i","null");
+        logger.info("****** The file being used is " + filepath);
+        String path = cmd.getOptionValue("p","null");
+        logger.info("****** The path being used to verify is " + path);
+        //String system = cmd.getOptionValue("scorer", "rule");
+        return new Configuration(filepath, path);
+    }
+
+
+    private record Configuration(String filePath, String path){
+        Configuration{
+            final String allowedCharactersInPath = "FLR123456789";
+        
+            if (!Paths.get(filePath).toFile().exists()){
+                throw new IllegalArgumentException("This file does not exist");
+            }
+
+            for (int i = 0; i < path.length(); i++) {
+                char currentChar = path.charAt(i);
+
+                if (allowedCharactersInPath.indexOf(currentChar) == -1) {
+                    throw new IllegalArgumentException("Path can only contain the letters FLR and the digits");
+                }
+            }
+
+            
+        }
+    }   
 }
