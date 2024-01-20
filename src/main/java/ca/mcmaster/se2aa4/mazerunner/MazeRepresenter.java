@@ -15,6 +15,7 @@ public class MazeRepresenter {
     private final String filePath;
     private Point entryPoint = new Point(0, 0);
     private Point exitPoint = new Point(0, 0);
+    public Point currentPoint = entryPoint;
     public ArrayList<ArrayList<String>> maze = new ArrayList<>();
 
     private static final Logger logger = LogManager.getLogger();

@@ -2,7 +2,7 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 public interface PathFinder {
 
-    String findPath(MazeRepresenter maze);
+    String findOutputPath(MazeRepresenter maze);
     
-    boolean pathFound();
+    boolean outputPathFound();
 }

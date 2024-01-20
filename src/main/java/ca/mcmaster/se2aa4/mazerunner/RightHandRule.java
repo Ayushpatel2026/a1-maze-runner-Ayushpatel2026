@@ -9,13 +9,13 @@ public class RightHandRule implements PathFinder {
     }
 
     @Override
-    public String findPath(MazeRepresenter maze) {
+    public String findOutputPath(MazeRepresenter maze) {
 
         return null;
     }
 
     @Override
-    public boolean pathFound() {
+    public boolean outputPathFound() {
 
         return true;
     }

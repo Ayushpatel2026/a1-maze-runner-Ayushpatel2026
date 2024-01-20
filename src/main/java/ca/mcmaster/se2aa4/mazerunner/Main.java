@@ -1,8 +1,5 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.commons.cli.*;
@@ -12,13 +9,6 @@ import java.nio.file.Paths;
 public class Main {
 
     private static final Logger logger = LogManager.getLogger();
-
-    // Figure out what the next move is based on the right side wall hugging rule
-    public static int[] next_move(int[] current_coordinates){
-        int[] next_coordinates= {0,0};
-        return next_coordinates;
-        
-    }
 
     /*Check if a move is valid. 
     Move validity does not depend on whether wall on right side rule is met as we will be implementing new algorithms later
@@ -35,14 +25,6 @@ public class Main {
         return current_coordinates;
     }
 
-    /*Take the next coordinates as input and figure out what the path will be for that move
-    Check validity of move first and then append "path" here to a global path variable
-    */
-    public static String directions(int[] next_coordinates){
-        String path = "FFFL";
-        return path;
-    }
-
 
     // Converting long form of path to factorized form and vice versa
     public static String pathConverter(String path){
@@ -55,11 +37,13 @@ public class Main {
         try {
             Configuration config = configure(args);
             MazeRepresenter maze = new MazeRepresenter(config.filePath);
-            if (config.path.equals("null")){
+            MazeExplorer explorer = new MazeExplorer(maze);
+            if (config.inputPath.equals("null")){
+                explorer.explore();
                 PathFinder algorithm = new RightHandRule(maze);
-                String path = algorithm.findPath(maze);
-                if (algorithm.pathFound()) {
-                    System.out.println("Path found: " + path);
+                String outputPath = algorithm.findOutputPath(maze);
+                if (algorithm.outputPathFound()) {
+                    System.out.println("Path found: " + outputPath);
                 } else {
                     System.out.println("No path found.");
                 }
@@ -103,14 +87,14 @@ public class Main {
         CommandLine cmd = parser.parse(options, commandLineArguments);
         String filepath = cmd.getOptionValue("i","null");
         logger.info("****** The file being used is " + filepath);
-        String path = cmd.getOptionValue("p","null");
-        logger.info("****** The path being used to verify is " + path);
+        String inputPath = cmd.getOptionValue("p","null");
+        logger.info("****** The path being used to verify is " + inputPath);
         //String system = cmd.getOptionValue("scorer", "rule");
-        return new Configuration(filepath, path);
+        return new Configuration(filepath, inputPath);
     }
 
 
-    private record Configuration(String filePath, String path){
+    private record Configuration(String filePath, String inputPath){
         Configuration{
             final String allowedCharactersInPath = "FLR123456789";
         
@@ -118,10 +102,10 @@ public class Main {
                 throw new IllegalArgumentException("This file does not exist");
             }
 
-            for (int i = 0; i < path.length(); i++) {
-                char currentChar = path.charAt(i);
+            for (int i = 0; i < inputPath.length(); i++) {
+                char currentChar = inputPath.charAt(i);
 
-                if (allowedCharactersInPath.indexOf(currentChar) == -1 && !path.equals("null")) {
+                if (allowedCharactersInPath.indexOf(currentChar) == -1 && !inputPath.equals("null")) {
                     throw new IllegalArgumentException("Path can only contain the letters FLR and the digits");
                 }
             }
