@@ -6,26 +6,12 @@ import java.io.FileReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.commons.cli.*;
-import java.util.ArrayList;
 import java.nio.file.Paths;
 
 
 public class Main {
 
     private static final Logger logger = LogManager.getLogger();
-
-    
-    // Converts the file into a matrix to make the maze easier to work with
-    public static ArrayList<ArrayList<Integer>> matrix(String filename){
-        ArrayList<ArrayList<Integer>> maze = new ArrayList<>();
-        return maze;
-    }
-
-
-    //Determine the coordinates of the entry and exit points
-    public static void entry_exit(ArrayList<ArrayList<Integer>> maze){
-        int[] entry, exit;
-    }
 
     // Figure out what the next move is based on the right side wall hugging rule
     public static int[] next_move(int[] current_coordinates){
@@ -88,13 +74,27 @@ public class Main {
 
         try {
             Configuration config = configure(args);
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            //e.printStackTrace();
+            MazeRepresenter maze = new MazeRepresenter(config.filePath);
+            if (config.path.equals("null")){
+                PathFinder algorithm = new RightHandRule(maze);
+                String path = algorithm.findPath(maze);
+                if (algorithm.pathFound()) {
+                    System.out.println("Path found: " + path);
+                } else {
+                    System.out.println("No path found.");
+                }
+            }
+        } catch (Exception e){
             System.err.println(e.getMessage());
-        }catch(IllegalArgumentException e){
-            System.err.println(e.getMessage());
+            System.exit(0);
         }
+        // catch (ParseException e) {
+        //     // TODO Auto-generated catch block
+        //     //e.printStackTrace();
+        //     System.err.println(e.getMessage());
+        // }catch(IllegalArgumentException e){
+        //     System.err.println(e.getMessage());
+        // }
 
 
         // try {
@@ -148,7 +148,7 @@ public class Main {
             for (int i = 0; i < path.length(); i++) {
                 char currentChar = path.charAt(i);
 
-                if (allowedCharactersInPath.indexOf(currentChar) == -1) {
+                if (allowedCharactersInPath.indexOf(currentChar) == -1 && !path.equals("null")) {
                     throw new IllegalArgumentException("Path can only contain the letters FLR and the digits");
                 }
             }
