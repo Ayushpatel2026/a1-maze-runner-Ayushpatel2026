@@ -52,26 +52,6 @@ public class Main {
     public static void main(String[] args) {
         logger.info("** Starting Maze Runner");
 
-        // String filePath = null;
-
-        // // Check for -i or --input flag
-        // for (int i = 0; i < args.length; i++) {
-        //     if (args[i].equals("-i") || args[i].equals("--input")) {
-        //         if (i + 1 < args.length) {
-        //             filePath = args[i + 1];
-        //         } else {
-        //             System.err.println("Error: Missing file path after -i or --input flag.");
-        //             System.exit(1);
-        //         }
-        //         break;
-        //     }
-        // }
-
-        // if (filePath == null) {
-        //     System.err.println("Error: Missing input file. Use -i or --input followed by the file path.");
-        //     System.exit(1);
-        // }
-
         try {
             Configuration config = configure(args);
             MazeRepresenter maze = new MazeRepresenter(config.filePath);
@@ -88,13 +68,6 @@ public class Main {
             System.err.println(e.getMessage());
             System.exit(0);
         }
-        // catch (ParseException e) {
-        //     // TODO Auto-generated catch block
-        //     //e.printStackTrace();
-        //     System.err.println(e.getMessage());
-        // }catch(IllegalArgumentException e){
-        //     System.err.println(e.getMessage());
-        // }
 
 
         // try {
