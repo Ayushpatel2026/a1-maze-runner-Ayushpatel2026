@@ -15,7 +15,7 @@ public class MazeRepresenter {
     private final String filePath;
     private Point entryPoint = new Point(0, 0);
     private Point exitPoint = new Point(0, 0);
-    public Point currentPoint = entryPoint;
+    //public Point currentPoint = entryPoint;
     public ArrayList<ArrayList<String>> maze = new ArrayList<>();
 
     private static final Logger logger = LogManager.getLogger();
@@ -68,7 +68,6 @@ public class MazeRepresenter {
             if (maze.get(row).get(0).equals("PASS")) {
                 entryPoint.row_number = row;
                 entryPoint.column_number = 0;
-                System.out.println(entryPoint.row_number);
                 break;
             }
         }
@@ -77,7 +76,6 @@ public class MazeRepresenter {
             if (maze.get(row).get(maze.get(row).size() - 1).equals("PASS")) {
                 exitPoint.row_number = row;
                 exitPoint.column_number = maze.get(row).size() - 1;
-                System.out.println(exitPoint.row_number);
                 break;
             }
         }
@@ -96,6 +94,18 @@ public class MazeRepresenter {
 
     public Point getExitPoint(){
         return exitPoint;
+    }
+
+    public int getNumRows(){
+        return maze.size();
+    }
+
+    public int getNumColumns(){
+        return maze.get(0).size();
+    }
+
+    public String getValueAt(int row_number, int column_number){
+        return maze.get(row_number).get(column_number);
     }
 
 }

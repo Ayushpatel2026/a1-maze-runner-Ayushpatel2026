@@ -39,14 +39,27 @@ public class Main {
             MazeRepresenter maze = new MazeRepresenter(config.filePath);
             MazeExplorer explorer = new MazeExplorer(maze);
             if (config.inputPath.equals("null")){
-                explorer.explore();
-                PathFinder algorithm = new RightHandRule(maze);
-                String outputPath = algorithm.findOutputPath(maze);
-                if (algorithm.outputPathFound()) {
+                logger.info("**** Computing path");
+                String outputPath = explorer.explore();
+                if (outputPath.equals("null")){
                     System.out.println("Path found: " + outputPath);
-                } else {
-                    System.out.println("No path found.");
+                    logger.error("PATH NOT COMPUTED");
+                }else{
+                    System.out.println("Path found: " + outputPath);
                 }
+                // PathFinder algorithm = new RightHandRule(maze);
+                // String outputPath = algorithm.findOutputPath(maze);
+                // if (algorithm.outputPathFound()) {
+                //     System.out.println("Path found: " + outputPath);
+                // } else {
+                //     System.out.println("No path found.");
+                // }
+            }
+            else if (!config.inputPath.equals("null") && !config.filePath.equals("null")){
+                //PathChecker checker = new PathChecker(maze, explorer);
+            }
+            else{
+                logger.error("You have not provided the right flags and arguments in accordance with the instructions");
             }
         } catch (Exception e){
             System.err.println(e.getMessage());
@@ -72,8 +85,7 @@ public class Main {
         // } catch(Exception e) {
         //     System.err.println("/!\\ An error has occured /!\\");
         // }
-        logger.info("**** Computing path");
-        logger.error("PATH NOT COMPUTED");
+        
         logger.info("** End of MazeRunner");
     }
 
