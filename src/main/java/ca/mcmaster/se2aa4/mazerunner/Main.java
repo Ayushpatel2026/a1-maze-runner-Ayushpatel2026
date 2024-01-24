@@ -17,15 +17,6 @@ public class Main {
     public static boolean valid(int[] next_coordinates){
         return true;
     }
-
-    /*Check if a path is valid, convert long form path into actual coordinate directions, check if a move is valid using
-    the valid method and then calculate and update the new current coordinates 
-    */ 
-    public static int[] pathCheck(int[] current_coordinates, String path){
-        return current_coordinates;
-    }
-
-
     // Converting long form of path to factorized form and vice versa
     public static String pathConverter(String path){
         return path;
@@ -56,7 +47,12 @@ public class Main {
                 // }
             }
             else if (!config.inputPath.equals("null") && !config.filePath.equals("null")){
-                //PathChecker checker = new PathChecker(maze, explorer);
+                PathChecker checker = new PathChecker(maze, explorer, config.inputPath);
+                if (checker.isValidPath(config.inputPath)){
+                    System.out.println("Correct path");
+                }else{
+                    System.out.println("Incorrect path");
+                }
             }
             else{
                 logger.error("You have not provided the right flags and arguments in accordance with the instructions");
