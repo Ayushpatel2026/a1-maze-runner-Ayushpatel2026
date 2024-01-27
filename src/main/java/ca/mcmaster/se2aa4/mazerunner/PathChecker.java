@@ -4,6 +4,7 @@ public class PathChecker {
     MazeRepresenter maze;
     MazeExplorer explorer;
     String inputPath;
+
     PathChecker(MazeRepresenter maze, MazeExplorer explorer, String inputPath){
         this.maze = maze;
         this.explorer = explorer;
@@ -35,8 +36,6 @@ public class PathChecker {
             } else {
                 if (needToFactor == true){
                     count = Integer.parseInt(countBuilder.toString());
-                    // for loop
-                    
                     countBuilder.setLength(0);
                     for (int i = 0; i < count; i++) {
                         path.append(c);
@@ -45,15 +44,9 @@ public class PathChecker {
                 }
                 else{
                     path.append(c);
-                    //only append one 
-                }
-                
+                }   
             }
         }
-
-        // Process the last command
-      
-
         return path.toString();
 
     }
@@ -71,7 +64,4 @@ public class PathChecker {
         }
 
     }
-
-
-
 }
