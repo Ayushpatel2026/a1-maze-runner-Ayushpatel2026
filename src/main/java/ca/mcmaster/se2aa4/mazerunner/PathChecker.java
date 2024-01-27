@@ -4,11 +4,15 @@ public class PathChecker {
     MazeRepresenter maze;
     MazeExplorer explorer;
     String inputPath;
+    Point entryPoint;
+    Point exitPoint;
 
     PathChecker(MazeRepresenter maze, MazeExplorer explorer, String inputPath){
         this.maze = maze;
         this.explorer = explorer;
         this.inputPath = inputPath;
+        this.entryPoint = maze.getEntryPoint();
+        this.exitPoint = maze.getExitPoint();
     }
 
     public boolean isFactored(String inputPath){
@@ -21,7 +25,6 @@ public class PathChecker {
 
         boolean needToFactor = false;
 
-        //char currentMove = 0;  
         StringBuilder countBuilder = new StringBuilder();
         int count = 0;
 
@@ -51,12 +54,11 @@ public class PathChecker {
 
     }
 
-    public boolean isValidPath(String inputPath){
-        Point currentPoint = explorer.currentPoint;
+    public boolean isValidPath(String inputPath, Point currentPoint, Point exitPoint){
         MazeExplorer.Direction currentDirection = explorer.direction;
 
         Point potentialNextPoint = explorer.nextPoint(inputPath, currentPoint, currentDirection);
-        if (potentialNextPoint != null && potentialNextPoint.equals(maze.getExitPoint())){
+        if (potentialNextPoint != null && potentialNextPoint.equals(exitPoint)){
             return true;
         }
         else{

@@ -39,15 +39,12 @@ public class MazeRepresenter {
 
                 for (int idx = 0; idx < line.length(); idx++) {
                     if (line.charAt(idx) == '#') {
-                        System.out.print("WALL ");
                         row.add("WALL");
                     } else if (line.charAt(idx) == ' ') {
-                        System.out.print("PASS ");
                         row.add("PASS");
                     }
                 }
                 maze.add(row);
-                System.out.print(System.lineSeparator());
             }
             reader.close();
 

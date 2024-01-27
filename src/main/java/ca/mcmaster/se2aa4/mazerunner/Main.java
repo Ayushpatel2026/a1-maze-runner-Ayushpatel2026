@@ -26,12 +26,14 @@ public class Main {
             else if (!config.inputPath.equals("null") && !config.filePath.equals("null")){
                 PathChecker checker = new PathChecker(maze, explorer, config.inputPath);
                 if (!checker.isFactored(checker.inputPath)){
-                    System.out.println("UNfactoring");
                     checker.inputPath = checker.unFactor(checker.inputPath);
                 }
-                if (checker.isValidPath(checker.inputPath)){
+                if (checker.isValidPath(checker.inputPath, checker.entryPoint, checker.exitPoint)){
                     System.out.println("Correct path");
-                }else{
+                }else if (checker.isValidPath(checker.inputPath, checker.exitPoint, checker.entryPoint)){
+                    System.out.println("correct path");
+                }
+                else{
                     System.out.println("Incorrect path");
                 }
             }

@@ -24,23 +24,17 @@ public class MazeExplorer {
 
     // the path will be of the form FLR, where F means moveforward, L means turn left and R means turn right
     public Point nextPoint(String path, Point currentPoint, Direction currentDirection){
-        System.out.println(path);
         for (int i = 0; i < path.length(); i++) {
             char move = path.charAt(i);
-            System.out.println(move);
             if (move == 'F') {
                 currentPoint = moveForward(currentPoint, currentDirection);
                 if (currentPoint == null){
-                    //System.out.println("null");
                     break;
                 }
-                //System.out.println(currentPoint.column_number+","+currentPoint.row_number);
             } else if (move == 'L') {
                 currentDirection = turnLeft(currentDirection);
-                //System.out.println(currentDirection);
             } else if (move == 'R') {
                 currentDirection = turnRight(currentDirection);
-                //System.out.println(currentDirection);
             } else if (move == ' ') {
                 // Do nothing
             }else{
@@ -48,7 +42,6 @@ public class MazeExplorer {
                 return null;
             }
         }
-        //System.out.println(currentPoint.column_number+","+currentPoint.row_number);
         return currentPoint;
     }
 
