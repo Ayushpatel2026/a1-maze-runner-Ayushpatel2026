@@ -5,7 +5,7 @@ public class MazeExplorer {
     public Point nextPoint;
     public StringBuilder outputPath;
     public Point currentPoint;
-    public Direction intialDirection = Direction.EAST;
+    public Direction direction = Direction.EAST;
 
     public enum Direction {
         NORTH, //(0,1)
@@ -54,6 +54,7 @@ public class MazeExplorer {
         System.out.println(path);
         for (int i = 0; i < path.length(); i++) {
             char move = path.charAt(i);
+            System.out.println(move);
             if (move == 'F') {
                 currentPoint = moveForward(currentPoint, currentDirection);
                 if (currentPoint == null){
@@ -67,8 +68,9 @@ public class MazeExplorer {
             } else if (move == 'R') {
                 currentDirection = turnRight(currentDirection);
                 //System.out.println(currentDirection);
-            } else {
-                // Handle invalid move character
+            } else if (move == ' ') {
+                // Do nothing
+            }else{
                 System.out.println("Invalid move character: " + move);
                 return null;
             }
@@ -81,11 +83,45 @@ public class MazeExplorer {
     public String pathString(Point currentPoint,Direction currentDirection, Point nextPoint){
         int deltaX = nextPoint.column_number - currentPoint.column_number;
         int deltaY = nextPoint.row_number - currentPoint.row_number;
-        
-        if (deltaX == 1){
-            return "F";
+        System.out.println(deltaX);
+        System.out.println(deltaY);
+
+        StringBuilder pathBuilder = new StringBuilder();
+
+        if (deltaX == 0 && deltaY == 0){
+            pathBuilder.append("L");
         }
-        return "null";
+
+        // this code functions under the assumption that only one of deltaX and deltaY will be non-zero (no diaganal movement)
+        if (deltaX != 0) {
+            if (deltaX == 1 && currentDirection == Direction.NORTH || deltaX == -1 && currentDirection == Direction.SOUTH) {
+                pathBuilder.append("R");
+            } else if(deltaX == 1 && currentDirection == Direction.EAST || deltaX == -1 && currentDirection == Direction.WEST) {
+                //skip 
+            }
+            else if (deltaX == 1 && currentDirection == Direction.WEST || deltaX == -1 && currentDirection == Direction.EAST){
+                pathBuilder.append("LL");
+            }
+            else if (deltaX == -1 && currentDirection == Direction.NORTH || deltaX == 1 && currentDirection == Direction.SOUTH){
+                pathBuilder.append("L");
+            }
+        } else if (deltaY != 0) {
+            if (deltaY == 1 && currentDirection == Direction.WEST || deltaY == -1 && currentDirection == Direction.EAST) {
+                pathBuilder.append("L");
+            } else if(deltaY == 1 && currentDirection == Direction.SOUTH || deltaY == -1 && currentDirection == Direction.NORTH) {
+                //skip 
+            }
+            else if (deltaY == 1 && currentDirection == Direction.NORTH || deltaY == -1 && currentDirection == Direction.SOUTH){
+                pathBuilder.append("LL");
+            }
+            else if (deltaY == -1 && currentDirection == Direction.WEST || deltaY == 1 && currentDirection == Direction.EAST){
+                pathBuilder.append("R");
+            }
+        }
+
+        pathBuilder.append("F");
+
+        return pathBuilder.toString();
     }
 
 
@@ -95,7 +131,7 @@ public class MazeExplorer {
     then it finds an empty string
     */
     public String explore() {
-        Direction direction = intialDirection;
+        Direction direction = this.direction;
         
         while (!currentPoint.equals(maze.getExitPoint())) {
             Point potentialNextPoint = nextPoint(currentPoint);

@@ -31,15 +31,16 @@ public class Main {
             MazeExplorer explorer = new MazeExplorer(maze);
             if (config.inputPath.equals("null")){
                 logger.info("**** Computing path");
-                String outputPath = explorer.explore();
-                if (outputPath.equals("null")){
-                    System.out.println("Path found: " + outputPath);
-                    logger.error("PATH NOT COMPUTED");
-                }else{
-                    System.out.println("Path found: " + outputPath);
-                }
-                // PathFinder algorithm = new RightHandRule(maze);
-                // String outputPath = algorithm.findOutputPath(maze);
+                // String outputPath = explorer.explore();
+                // if (outputPath.equals("null")){
+                //     System.out.println("Path found: " + outputPath);
+                //     logger.error("PATH NOT COMPUTED");
+                // }else{
+                //     System.out.println("Path found: " + outputPath);
+                // }
+                PathFinder algorithm = new RightHandRule(maze, explorer);
+                String outputPath = algorithm.findOutputPath(maze);
+                System.out.println(outputPath);
                 // if (algorithm.outputPathFound()) {
                 //     System.out.println("Path found: " + outputPath);
                 // } else {
@@ -48,7 +49,11 @@ public class Main {
             }
             else if (!config.inputPath.equals("null") && !config.filePath.equals("null")){
                 PathChecker checker = new PathChecker(maze, explorer, config.inputPath);
-                if (checker.isValidPath(config.inputPath)){
+                if (!checker.isFactored(checker.inputPath)){
+                    System.out.println("UNfactoring");
+                    checker.inputPath = checker.unFactor(checker.inputPath);
+                }
+                if (checker.isValidPath(checker.inputPath)){
                     System.out.println("Correct path");
                 }else{
                     System.out.println("Incorrect path");
@@ -104,7 +109,7 @@ public class Main {
 
     private record Configuration(String filePath, String inputPath){
         Configuration{
-            final String allowedCharactersInPath = "FLR123456789";
+            final String allowedCharactersInPath = "FLR123456789 ";
         
             if (!Paths.get(filePath).toFile().exists()){
                 throw new IllegalArgumentException("This file does not exist");
