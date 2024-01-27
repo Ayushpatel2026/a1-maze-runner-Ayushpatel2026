@@ -28,16 +28,12 @@ public class RightHandRule implements PathFinder {
                 break;
             }
         }
+        System.out.println(outputPath.toString());
         System.out.println("Final Output Path: " + factor(outputPath.toString()));
     
         return outputPath.toString();
     }
 
-    @Override
-    public boolean outputPathFound() {
-
-        return true;
-    }
 
     public Point nextPoint(Point currentPoint, MazeExplorer.Direction currentDirection){
         int current_row_number = currentPoint.row_number;
@@ -129,19 +125,16 @@ public class RightHandRule implements PathFinder {
 
     public String factor(String outputPath){
         StringBuilder canonizedPath = new StringBuilder();
-        char currentMove = 0;  // Placeholder for the current command
-        int moveCount = 0;        // Counter for the current command's repetition
+        char currentMove = 0;  
+        int moveCount = 0;        
 
         for (char move : outputPath.toCharArray()) {
             if (currentMove == 0) {
-                // First command encountered
                 currentMove = move;
                 moveCount = 1;
             } else if (currentMove == move) {
-                // Same command encountered again
                 moveCount++;
             } else {
-                // Different command encountered
                 if (moveCount > 0) {
                     if (moveCount == 1) {
                         canonizedPath.append(currentMove);
@@ -153,6 +146,14 @@ public class RightHandRule implements PathFinder {
                 }
                 currentMove = move;
                 moveCount = 1;
+            }
+        }
+
+        if (moveCount > 0) {
+            if (moveCount == 1) {
+                canonizedPath.append(currentMove);
+            } else {
+                canonizedPath.append(moveCount).append(currentMove);
             }
         }
 

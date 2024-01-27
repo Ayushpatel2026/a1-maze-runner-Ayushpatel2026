@@ -20,37 +20,39 @@ public class PathChecker {
 
         boolean needToFactor = false;
 
-        char currentMove = 0;  
+        //char currentMove = 0;  
         StringBuilder countBuilder = new StringBuilder();
         int count = 0;
 
         for (char c : factoredPath.toCharArray()) {
+            if (c == ' '){
+                continue;
+            }
             if (Character.isDigit(c)) {
+                needToFactor = true;
                 countBuilder.append(c);
+
             } else {
-                if (countBuilder.length() > 0){
+                if (needToFactor == true){
                     count = Integer.parseInt(countBuilder.toString());
+                    // for loop
+                    
+                    countBuilder.setLength(0);
+                    for (int i = 0; i < count; i++) {
+                        path.append(c);
+                    }
+                    needToFactor = false;
                 }
                 else{
-                    count = 1;
+                    path.append(c);
+                    //only append one 
                 }
-
-                // Append the move character 'count' times to the path
-                for (int i = 0; i < count; i++) {
-                    path.append(currentMove);
-                }
-
-                // Reset for the next command
-                currentMove = c;
-                countBuilder.setLength(0);
+                
             }
         }
 
         // Process the last command
-        count = (countBuilder.length() > 0) ? Integer.parseInt(countBuilder.toString()) : 1;
-        for (int i = 0; i < count; i++) {
-            path.append(currentMove);
-        }
+      
 
         return path.toString();
 
