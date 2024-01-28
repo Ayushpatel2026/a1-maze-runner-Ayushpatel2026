@@ -33,7 +33,7 @@ public class RightHandRule implements PathFinder {
     }
 
 
-    public Point nextPoint(Point currentPoint, MazeExplorer.Direction currentDirection){
+    public Point nextPoint(Point currentPoint, MazeExplorer.Direction currentDirection) throws IllegalStateException{
         int current_row_number = currentPoint.row_number;
         int current_column_number = currentPoint.column_number;
 
@@ -118,10 +118,19 @@ public class RightHandRule implements PathFinder {
             
         }
 
+        if (potentialNextPoint == null){
+            throw new IllegalStateException("Path Not Found");
+        }
+
         return potentialNextPoint;      
     }
 
-    public String factor(String outputPath){
+    public String factor(String outputPath) throws IllegalArgumentException{
+
+        if (outputPath.isEmpty()){
+            throw new IllegalArgumentException("Output Path is Empty!");
+        }
+
         StringBuilder canonizedPath = new StringBuilder();
         char currentMove = 0;  
         int moveCount = 0;        
