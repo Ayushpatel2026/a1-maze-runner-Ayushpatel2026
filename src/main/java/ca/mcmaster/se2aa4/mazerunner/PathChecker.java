@@ -10,9 +10,57 @@ public class PathChecker {
         this.inputPath = inputPath;
     }
 
+    public boolean isFactored(String inputPath){
+        String pattern = "^[FLR ]*$";
+        return inputPath.matches(pattern);
+    }
+
+    public String unFactor(String factoredPath){
+        StringBuilder path = new StringBuilder();
+
+        boolean needToFactor = false;
+
+        //char currentMove = 0;  
+        StringBuilder countBuilder = new StringBuilder();
+        int count = 0;
+
+        for (char c : factoredPath.toCharArray()) {
+            if (c == ' '){
+                continue;
+            }
+            if (Character.isDigit(c)) {
+                needToFactor = true;
+                countBuilder.append(c);
+
+            } else {
+                if (needToFactor == true){
+                    count = Integer.parseInt(countBuilder.toString());
+                    // for loop
+                    
+                    countBuilder.setLength(0);
+                    for (int i = 0; i < count; i++) {
+                        path.append(c);
+                    }
+                    needToFactor = false;
+                }
+                else{
+                    path.append(c);
+                    //only append one 
+                }
+                
+            }
+        }
+
+        // Process the last command
+      
+
+        return path.toString();
+
+    }
+
     public boolean isValidPath(String inputPath){
         Point currentPoint = explorer.currentPoint;
-        MazeExplorer.Direction currentDirection = explorer.intialDirection;
+        MazeExplorer.Direction currentDirection = explorer.direction;
 
         Point potentialNextPoint = explorer.nextPoint(inputPath, currentPoint, currentDirection);
         if (potentialNextPoint != null && potentialNextPoint.equals(maze.getExitPoint())){
