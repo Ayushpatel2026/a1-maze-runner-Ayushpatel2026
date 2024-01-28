@@ -17,21 +17,19 @@ public class RightHandRule implements PathFinder {
 
     @Override
     public String findOutputPath(MazeRepresenter maze) {
-        
+        String outputString;
         while (!currentPoint.equals(maze.getExitPoint())) {
             Point nextPoint = nextPoint(currentPoint, explorer.direction);
     
             if (nextPoint != null) {
                 currentPoint = nextPoint;
             } else {
-                System.out.println("Explorer is blocked!");
+                System.out.println("No Path Found");
                 break;
             }
         }
-        System.out.println(outputPath.toString());
-        System.out.println("Final Output Path: " + factor(outputPath.toString()));
-    
-        return outputPath.toString();
+        outputString = factor(outputPath.toString());
+        return outputString;
     }
 
 
