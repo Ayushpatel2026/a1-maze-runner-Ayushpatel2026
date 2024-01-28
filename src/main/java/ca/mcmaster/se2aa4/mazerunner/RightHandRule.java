@@ -15,6 +15,7 @@ public class RightHandRule implements PathFinder {
         this.direction = explorer.direction;
     }
 
+    // outputs the path through the maze from entry to exit
     @Override
     public String findOutputPath(MazeRepresenter maze) {
         String outputString;
@@ -32,7 +33,7 @@ public class RightHandRule implements PathFinder {
         return outputString;
     }
 
-
+    // determines nextPoint based on the right hand algorithm and throws exception if next point not found
     public Point nextPoint(Point currentPoint, MazeExplorer.Direction currentDirection) throws IllegalStateException{
         int current_row_number = currentPoint.row_number;
         int current_column_number = currentPoint.column_number;
@@ -125,6 +126,7 @@ public class RightHandRule implements PathFinder {
         return potentialNextPoint;      
     }
 
+    // factors the output path
     public String factor(String outputPath) throws IllegalArgumentException{
 
         if (outputPath.isEmpty()){

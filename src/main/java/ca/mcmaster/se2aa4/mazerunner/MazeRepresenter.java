@@ -85,6 +85,8 @@ public class MazeRepresenter {
 
     }
 
+    // Getters for the maze
+
     public Point getEntryPoint(){
         Point point = new Point(entryPoint.row_number, entryPoint.column_number);
         return point;

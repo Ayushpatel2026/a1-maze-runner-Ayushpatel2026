@@ -45,32 +45,6 @@ public class MazeExplorer {
         return currentPoint;
     }
 
-    // public String explore() {
-    //     Direction direction = this.direction;
-        
-    //     while (!currentPoint.equals(maze.getExitPoint())) {
-    //         Point potentialNextPoint = nextPoint(currentPoint);
-    
-    //         if (potentialNextPoint != null) {
-    //             String path = pathString(currentPoint, direction, potentialNextPoint);
-    //             outputPath.append(path);
-    //             currentPoint = potentialNextPoint;
-    //         } else {
-    //             // No valid next point found, break out of the loop
-    //             break;
-    //         }
-    //     }
-    
-    //     if (currentPoint.equals(maze.getExitPoint())) {
-    //         System.out.println(outputPath);
-    //         return outputPath.toString();
-    //     } else {
-    //         // Handle the case where the exit point is not reached
-    //         System.out.println("No valid path to the exit.");
-    //         return null;
-    //     }
-    // }
-
     public Point moveForward(Point currentPoint, Direction currentDirection){
         Point nextPoint = new Point(currentPoint.row_number, currentPoint.column_number);
 
