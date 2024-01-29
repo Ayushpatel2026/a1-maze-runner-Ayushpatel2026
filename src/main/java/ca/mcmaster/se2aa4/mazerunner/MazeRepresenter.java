@@ -29,7 +29,7 @@ public class MazeRepresenter {
     /* Converts the file into a 2D arraylist to make the maze easier to work with
     Throws error if there is problem with the file content
     */
-    public void matrix(){
+    private void matrix(){
         try {
             //logger.info("**** Reading the maze from file " + config.filePath);
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -55,7 +55,7 @@ public class MazeRepresenter {
     /*Determine the coordinates of the entry and exit points
     Throws an error if the maze does not have any valid entry-exit points
     */
-    public void entry_exit(){
+    private void entry_exit(){
         entryPoint.row_number = -1;
         entryPoint.column_number = -1;
         exitPoint.row_number = -1;
@@ -85,24 +85,31 @@ public class MazeRepresenter {
 
     }
 
+    // Getters for the maze
+
     public Point getEntryPoint(){
-        return entryPoint;
+        Point point = new Point(entryPoint.row_number, entryPoint.column_number);
+        return point;
     }
 
     public Point getExitPoint(){
-        return exitPoint;
+        Point point = new Point(exitPoint.row_number, exitPoint.column_number);
+        return point;
     }
 
     public int getNumRows(){
-        return maze.size();
+        int size = maze.size();
+        return size;
     }
 
     public int getNumColumns(){
-        return maze.get(0).size();
+        int size = maze.get(0).size();
+        return size;
     }
 
     public String getValueAt(int row_number, int column_number){
-        return maze.get(row_number).get(column_number);
+        String result = maze.get(row_number).get(column_number);
+        return result;
     }
 
 }
